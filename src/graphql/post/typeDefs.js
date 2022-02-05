@@ -8,6 +8,10 @@ export const postTypeDefs = gql`
 
   type Post {
     id: ID!
-    comments: [String!]!
+    title: String!
+    body: String!
+    # user: User!
+    indexRef: Int!
+    createdAt: String!
   }
 `;
