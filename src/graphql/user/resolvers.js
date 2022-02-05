@@ -3,7 +3,8 @@ const users = async (_, __, { getUsers }) => {
   return users.json();
 };
 
-const user = async (_, { id }, { getUsers }) => {
+const user = async (_, { id, teste }, { getUsers }) => {
+  console.log(teste);
   const user = await getUsers(id);
   return user.json();
 };
