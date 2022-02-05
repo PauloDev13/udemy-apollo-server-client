@@ -1,39 +1,9 @@
-import { ApolloServer, gql } from 'apollo-server';
+import { ApolloServer } from 'apollo-server';
+import { typeDefs, resolvers } from './graphql/schema';
 
 const server = new ApolloServer({
-  typeDefs: gql`
-    type Query {
-      user: User!
-      users: [User!]!
-    }
-    type User {
-      id: ID!
-      username: String!
-    }
-  `,
-
-  resolvers: {
-    Query: {
-      user: () => {
-        return {
-          id: 'HOdjl12',
-          username: 'prmorais',
-        };
-      },
-      users: () => {
-        return [
-          {
-            id: 'HOdjl12',
-            username: 'prmorais',
-          },
-          {
-            id: 'Jodke',
-            username: 'nanda',
-          },
-        ];
-      },
-    },
-  },
+  typeDefs,
+  resolvers,
 });
 
 server
