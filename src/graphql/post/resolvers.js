@@ -12,4 +12,10 @@ export const postResolvers = {
     post,
     posts,
   },
+
+  Post: {
+    winTimestamps: () => {
+      return 'Fernanda';
+    },
+  },
 };
