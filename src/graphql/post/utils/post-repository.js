@@ -1,5 +1,6 @@
 import { ValidationError } from 'apollo-server';
 
+// CRIA Post
 export const createPostFn = async (postData, dataSource) => {
   const postInfo = await createPostInfo(postData, dataSource);
   const { title, body, userId } = postInfo;
@@ -10,6 +11,48 @@ export const createPostFn = async (postData, dataSource) => {
     );
   }
   return await dataSource.post('/posts', { ...postInfo });
+};
+
+// ATUALIZA Post
+export const updatePostFn = async (postId, postData, dataSource) => {
+  if (!postId) {
+    throw new ValidationError(
+      'Para atualizar um Post, é preciso informar seu ID',
+    );
+  }
+
+  const { title, body, userId } = postData;
+
+  if (typeof title !== 'undefined') {
+    if (!title) {
+      throw new ValidationError(
+        'O título deve ser informado ou não deve ser enviado',
+      );
+    }
+  }
+
+  if (typeof body !== 'undefined') {
+    if (!body) {
+      throw new ValidationError(
+        'O conteúdo deve ser informado ou não deve ser enviado',
+      );
+    }
+  }
+
+  if (typeof userId !== 'undefined') {
+    if (!userId) {
+      throw new ValidationError(
+        'O ID do usuário deve ser informado ou não deve ser enviado',
+      );
+    }
+    await userExist(userId, dataSource);
+  }
+
+  if (postData?.userId) {
+    await userExist(postData.userId, dataSource);
+  }
+
+  return dataSource.patch(`/posts/${postId}`, { ...postData });
 };
 
 const userExist = async (userId, dataSource) => {
