@@ -10,8 +10,9 @@ const user = async (_, { id }, { getUsers }) => {
   return user.json();
 };
 
-const posts = async ({ id }, __, { postsDataLoader }) => {
-  return postsDataLoader.load(id);
+const posts = async ({ id }, __, { dataSources }) => {
+  const { dataLoader } = dataSources.postsAPI;
+  return dataLoader.load(id);
 };
 
 export const userResolvers = {

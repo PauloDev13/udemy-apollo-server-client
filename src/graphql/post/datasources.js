@@ -1,9 +1,11 @@
 import { RESTDataSource } from 'apollo-datasource-rest';
+import { makePostsDataloader } from './dataloader';
 
 export class PostsApi extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = process.env.API_URL;
+    this.dataLoader = makePostsDataloader(this.getPosts.bind(this));
   }
 
   async getPosts(urlParams = {}) {
