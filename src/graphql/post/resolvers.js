@@ -1,5 +1,5 @@
 const posts = async (_, { input }, { dataSources }) => {
-  var posts = dataSources.postsAPI.getPost(input);
+  var posts = dataSources.postsAPI.getPosts(input);
   return posts;
 };
 
