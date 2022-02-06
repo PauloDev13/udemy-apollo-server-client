@@ -6,6 +6,10 @@ export const postTypeDefs = gql`
     posts(input: apiFiltersInput): [Post!]!
   }
 
+  extend type Mutation {
+    createPost(input: CreatePost): Post!
+  }
+
   type Post {
     id: ID!
     title: String!
@@ -13,5 +17,11 @@ export const postTypeDefs = gql`
     user: User!
     indexRef: Int!
     createdAt: String!
+  }
+
+  input CreatePost {
+    title: String!
+    body: String!
+    userId: String!
   }
 `;
