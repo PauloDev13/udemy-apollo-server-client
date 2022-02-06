@@ -8,8 +8,9 @@ const post = async (_, { id }, { dataSources }) => {
   return post;
 };
 
-const user = async ({ userId }, __, { userDataLoader }) => {
-  return userDataLoader.load(userId);
+const user = async ({ userId }, __, { dataSources }) => {
+  const { dataLoader } = dataSources.usersAPI;
+  return dataLoader.load(userId);
 };
 
 export const postResolvers = {
