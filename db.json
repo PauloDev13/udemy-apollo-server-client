@@ -159,6 +159,14 @@
       "userName": "marcia_carvalho81",
       "indexRef": 1,
       "createdAt": "2016-12-08T00:49:39.870Z"
+    },
+    {
+      "firstName": "Maria Fernanda",
+      "lastName": "Nunes de Morais",
+      "userName": "nanda@morais",
+      "indexRef": 21,
+      "createdAt": "2022-02-07T01:50:47.665Z",
+      "id": "Wukg999"
     }
   ],
   "posts": [
@@ -353,22 +361,6 @@
       "userId": "502",
       "indexRef": 19,
       "createdAt": "2017-04-26T19:39:05.420Z"
-    },
-    {
-      "title": "Bolsonaro ultrapassa todos os candidatos somados nas pesquisas",
-      "body": "O Presidente Jair Bolsonaro aparece à frente nas pesquisas e ganha em todos os cenários",
-      "userId": "90",
-      "indexRef": 25,
-      "createdAt": "2022-02-06T20:51:33.725Z",
-      "id": "Jk0D_2v"
-    },
-    {
-      "title": "Bolsonaro dispara nas pesquisas",
-      "body": "O Presidente Jair Bolsonaro disparou nas pesquisas de intenção de votos",
-      "userId": "935",
-      "indexRef": 26,
-      "createdAt": "2022-02-06T21:43:18.922Z",
-      "id": "-sqyeC7"
     }
   ],
   "comments": [

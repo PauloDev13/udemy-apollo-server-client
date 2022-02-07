@@ -16,43 +16,59 @@ export const createPostFn = async (postData, dataSource) => {
 // ATUALIZA Post
 export const updatePostFn = async (postId, postData, dataSource) => {
   if (!postId) {
-    throw new ValidationError(
-      'Para atualizar um Post, é preciso informar seu ID',
-    );
+    throw new ValidationError('Para atualizar um Post informe seu ID');
   }
+
+  await postExist(postId, dataSource);
 
   const { title, body, userId } = postData;
 
   if (typeof title !== 'undefined') {
     if (!title) {
-      throw new ValidationError(
-        'O título deve ser informado ou não deve ser enviado',
-      );
+      throw new ValidationError('O título deve ser informado');
     }
   }
 
   if (typeof body !== 'undefined') {
     if (!body) {
-      throw new ValidationError(
-        'O conteúdo deve ser informado ou não deve ser enviado',
-      );
+      throw new ValidationError('O conteúdo deve ser informado');
     }
   }
 
   if (typeof userId !== 'undefined') {
     if (!userId) {
-      throw new ValidationError(
-        'O ID do usuário deve ser informado ou não deve ser enviado',
-      );
+      throw new ValidationError('O ID do usuário deve ser informado');
     }
     await userExist(userId, dataSource);
   }
 
-  if (postData?.userId) {
-    await userExist(postData.userId, dataSource);
+  // if (postData?.userId) {
+  //   await userExist(postData.userId, dataSource);
+  // }
+
+  return await dataSource.patch(`/posts/${postId}`, { ...postData });
+};
+
+// DELETA Post
+export const deletePostFn = async (postId, dataSource) => {
+  if (!postId) {
+    throw new ValidationError(
+      'Para excluir um Post, é preciso informar seu ID',
+    );
   }
 
-  return dataSource.patch(`/posts/${postId}`, { ...postData });
+  await postExist(postId, dataSource);
+
+  var deleted = await dataSource.delete(`/posts/${postId}`);
+  return !!deleted;
+};
+
+const postExist = async (postId, dataSource) => {
+  try {
+    await dataSource.context.dataSources.postsAPI.get(`/posts/${postId}`);
+  } catch (error) {
+    throw new ValidationError(`Post com ID: ${postId} não encontrado`);
+  }
 };
 
 const userExist = async (userId, dataSource) => {
