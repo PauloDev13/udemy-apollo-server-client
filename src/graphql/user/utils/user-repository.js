@@ -10,6 +10,12 @@ export const createUserFn = async (userData, dataSource) => {
       'Informe Nome, Sobrenome e o Login do usuário para concluir o cadastro',
     );
   }
+
+  var userFound = await isUserDuplicate(userName, dataSource);
+  if (typeof userFound !== 'undefined') {
+    throw new ValidationError(`Já existe um usuário com o Login ${userName}`);
+  }
+
   return await dataSource.post('/users', { ...userInfo });
 };
 
@@ -40,6 +46,11 @@ export const updateUserFn = async (userId, userData, dataSource) => {
     }
   }
 
+  var userFound = await isUserDuplicate(userName, dataSource);
+  if (typeof userFound !== 'undefined' && userFound.id !== userId) {
+    throw new ValidationError(`Já existe um usuário com o Login ${userName}`);
+  }
+
   return await dataSource.patch(`/users/${userId}`, { ...userData });
 };
 
@@ -62,8 +73,15 @@ const userExist = async (userId, dataSource) => {
   }
 };
 
+const isUserDuplicate = async (userName, dataSource) => {
+  const found = await dataSource.get('/users', {
+    userName,
+  });
+  return found[0];
+};
+
 const createUserInfo = async (userData, dataSource) => {
-  const { firstName, lastName, userName } = userData;
+  // const { firstName, lastName, userName } = userData;
 
   const indexRefUser = await dataSource.get('/users', {
     _limit: 1,
@@ -74,9 +92,7 @@ const createUserInfo = async (userData, dataSource) => {
   const indexRef = indexRefUser[0].indexRef + 1;
 
   return {
-    firstName,
-    lastName,
-    userName,
+    ...userData,
     indexRef,
     createdAt: new Date().toISOString(),
   };
