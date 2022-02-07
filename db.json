@@ -166,15 +166,17 @@
       "userName": "nanda@morais",
       "indexRef": 21,
       "createdAt": "2022-02-07T01:50:47.665Z",
-      "id": "Wukg999"
+      "id": "Wukg999",
+      "passwordHash": "$2b$12$RAJ5WuWKMNcBa/kPSwv9Ge.O/fFNa9s8e5zacO8ftWUXjxb20x7/O"
     },
     {
-      "firstName": "alterado",
-      "lastName": "Teste",
-      "userName": "morais",
+      "firstName": "Paulo Roberto",
+      "lastName": "Morais",
+      "userName": "prmorais13",
+      "passwordHash": "$2b$12$XFLGA46edATc8YNVSXf5Xe1IGOUF860lasEcVoahm.zABg/ZOXenG",
       "indexRef": 22,
-      "createdAt": "2022-02-07T03:36:50.025Z",
-      "id": "JK10EBK"
+      "createdAt": "2022-02-07T17:18:32.956Z",
+      "id": "PyA2X-p"
     }
   ],
   "posts": [
