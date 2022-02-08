@@ -1,5 +1,6 @@
 import { ValidationError, UserInputError } from 'apollo-server';
 import bcrypt from 'bcrypt';
+
 // CRIA User
 export const createUserFn = async (userData, dataSource) => {
   const { firstName, lastName, userName, password } = userData;
