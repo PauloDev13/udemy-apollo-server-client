@@ -162,12 +162,13 @@
     },
     {
       "firstName": "Maria Fernanda",
-      "lastName": "Nunes de Morais",
+      "lastName": "Nunes Morais",
       "userName": "nanda@morais",
       "indexRef": 21,
       "createdAt": "2022-02-07T01:50:47.665Z",
       "id": "Wukg999",
-      "passwordHash": "$2b$12$RAJ5WuWKMNcBa/kPSwv9Ge.O/fFNa9s8e5zacO8ftWUXjxb20x7/O"
+      "passwordHash": "$2b$12$RAJ5WuWKMNcBa/kPSwv9Ge.O/fFNa9s8e5zacO8ftWUXjxb20x7/O",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJXdWtnOTk5IiwiaWF0IjoxNjQ0MzU5MDU1LCJleHAiOjE2NDQ0NDU0NTV9.RVbayCAW4uK6FIgVWcOIYYueS4Z7PK27getYANIDFGg"
     },
     {
       "firstName": "Paulo Roberto",

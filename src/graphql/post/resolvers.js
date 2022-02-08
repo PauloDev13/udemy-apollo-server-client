@@ -7,6 +7,7 @@ const posts = async (_, { input }, { dataSources, loggedUseId }) => {
   if (!loggedUseId) {
     throw new AuthenticationError('Usuário não está logado');
   }
+
   var posts = dataSources.postsAPI.getPosts(input);
   return posts;
 };

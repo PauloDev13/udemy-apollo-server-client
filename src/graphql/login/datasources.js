@@ -10,7 +10,6 @@ export class LoginApi extends RESTDataSource {
   }
 
   async login(userName, password) {
-    console.log(userName + ' - ' + password);
     const user = await this.get(
       '/users',
       { userName },
@@ -38,6 +37,13 @@ export class LoginApi extends RESTDataSource {
     }
 
     const token = this.createJwtToken({ userId });
+    await this.patch(
+      `/users/${userId}`,
+      { token },
+      {
+        cacheOptions: { ttl: 0 },
+      },
+    );
     return {
       userId,
       token,
@@ -48,7 +54,6 @@ export class LoginApi extends RESTDataSource {
 
   // checa se a senha está correta
   checkUserPassword(password, passwordHash) {
-    console.log(passwordHash + ' - ' + password);
     return bcrypt.compare(password, passwordHash);
   }
 

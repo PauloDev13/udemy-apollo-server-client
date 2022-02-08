@@ -1,5 +1,7 @@
 // QUERY RESOLVERS
 
+import { AuthenticationError } from 'apollo-server';
+
 // get all Users
 const users = async (_, { input }, { dataSources }) => {
   var users = await dataSources.usersAPI.getUsers(input);
@@ -19,7 +21,21 @@ const createUser = async (_, { userData }, { dataSources }) => {
   return await dataSources.usersAPI.createUser(userData);
 };
 
-const updateUser = async (_, { userId, userData }, { dataSources }) => {
+const updateUser = async (
+  _,
+  { userId, userData },
+  { dataSources, loggedUseId },
+) => {
+  if (!loggedUseId) {
+    throw new AuthenticationError('Usuário não está logado');
+  }
+
+  if (loggedUseId !== userId) {
+    throw new AuthenticationError(
+      'Você não tem autorização para atualizar este usuário',
+    );
+  }
+
   return await dataSources.usersAPI.updateUser(userId, userData);
 };
 

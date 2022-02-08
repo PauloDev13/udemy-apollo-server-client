@@ -1,22 +1,32 @@
 import { verify } from 'jsonwebtoken';
+import { UsersApi } from './user/datasources';
 
-export const context = ({ req }) => {
-  const loggedUseId = authorizeUser(req);
+export const context = async ({ req }) => {
+  const loggedUseId = await authorizeUser(req);
   return {
     loggedUseId,
   };
 };
 
 // MÉTODOS AUXILIARES
-const authorizeUser = (req) => {
+const authorizeUser = async (req) => {
   const { authorization } = req.headers;
 
-  try {
-    const [_bearer, token] = authorization.split(' ');
-    const { userId } = verify(token, process.env.JWT_SECRET);
+  if (authorization) {
+    try {
+      const [_bearer, token] = authorization.split(' ');
+      const { userId } = verify(token, process.env.JWT_SECRET);
 
-    return userId;
-  } catch (error) {
-    return '';
+      const usersAPI = new UsersApi();
+      usersAPI.initialize({});
+      const foundUser = await usersAPI.getUser(userId);
+
+      if (foundUser.token !== token) return '';
+
+      return userId;
+    } catch (error) {
+      console.log(error);
+      return '';
+    }
   }
 };
