@@ -2,7 +2,6 @@ import { RESTDataSource } from 'apollo-datasource-rest';
 import bcrypt from 'bcrypt';
 import { sign } from 'jsonwebtoken';
 import { AuthenticationError } from 'apollo-server';
-// import { loginFn } from './utils/login-repository';
 
 export class LoginApi extends RESTDataSource {
   constructor() {
