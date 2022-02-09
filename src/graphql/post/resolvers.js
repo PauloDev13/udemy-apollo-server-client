@@ -1,13 +1,6 @@
 // QUERY RESOLVERS
-
-import { AuthenticationError } from 'apollo-server';
-
 // get all Posts
-const posts = async (_, { input }, { dataSources, loggedUseId }) => {
-  if (!loggedUseId) {
-    throw new AuthenticationError('Usuário não está logado');
-  }
-
+const posts = async (_, { input }, { dataSources }) => {
   var posts = dataSources.postsAPI.getPosts(input);
   return posts;
 };
@@ -19,7 +12,6 @@ const post = async (_, { id }, { dataSources }) => {
 };
 
 // MUTATIONS RESOLVERS
-
 // create
 const createPost = (_, { input }, { dataSources }) => {
   return dataSources.postsAPI.createPost(input);

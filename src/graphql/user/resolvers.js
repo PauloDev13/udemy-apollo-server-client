@@ -1,7 +1,4 @@
 // QUERY RESOLVERS
-
-import { AuthenticationError } from 'apollo-server';
-
 // get all Users
 const users = async (_, { input }, { dataSources }) => {
   var users = await dataSources.usersAPI.getUsers(input);
@@ -15,27 +12,12 @@ const user = async (_, { id }, { dataSources }) => {
 };
 
 // MUTATIONS RESOLVERS
-
 // create
 const createUser = async (_, { userData }, { dataSources }) => {
   return await dataSources.usersAPI.createUser(userData);
 };
 
-const updateUser = async (
-  _,
-  { userId, userData },
-  { dataSources, loggedUseId },
-) => {
-  if (!loggedUseId) {
-    throw new AuthenticationError('Usuário não está logado');
-  }
-
-  if (loggedUseId !== userId) {
-    throw new AuthenticationError(
-      'Você não tem autorização para atualizar este usuário',
-    );
-  }
-
+const updateUser = async (_, { userId, userData }, { dataSources }) => {
   return await dataSources.usersAPI.updateUser(userId, userData);
 };
 
@@ -44,7 +26,6 @@ const deleteUser = async (_, { userId }, { dataSources }) => {
 };
 
 // FIELD RESOLVERS
-
 // field user in Post
 const posts = async ({ id }, __, { dataSources }) => {
   const { dataLoader } = dataSources.postsAPI;

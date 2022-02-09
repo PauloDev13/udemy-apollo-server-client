@@ -1,11 +1,12 @@
 import { ValidationError, UserInputError } from 'apollo-server';
 import bcrypt from 'bcrypt';
+import { isLoggedOwner } from '../../login/utils/auth-functions';
 
 // CRIA User
 export const createUserFn = async (userData, dataSource) => {
   const { firstName, lastName, userName, password } = userData;
 
-  var userInfo = await createUserInfo(userData, dataSource);
+  const userInfo = await createUserInfo(userData, dataSource);
 
   if (!firstName || !lastName || !userName || !password) {
     throw new ValidationError(
@@ -15,7 +16,7 @@ export const createUserFn = async (userData, dataSource) => {
 
   validateUserPassword(password);
 
-  var userFound = await isUserDuplicate(userName, dataSource);
+  const userFound = await isUserDuplicate(userName, dataSource);
   if (typeof userFound !== 'undefined') {
     throw new ValidationError(`Já existe um usuário com o Login ${userName}`);
   }
@@ -29,6 +30,9 @@ export const updateUserFn = async (userId, userData, dataSource) => {
     throw new ValidationError('Para atualizar um Usuário informe seu ID');
 
   await userExist(userId, dataSource);
+
+  const loggedUserId = dataSource.context.loggedUserId;
+  isLoggedOwner(userId, loggedUserId);
 
   const { firstName, lastName, userName, password } = userData;
 
@@ -58,7 +62,7 @@ export const updateUserFn = async (userId, userData, dataSource) => {
     }
   }
 
-  var userFound = await isUserDuplicate(userName, dataSource);
+  const userFound = await isUserDuplicate(userName, dataSource);
   if (typeof userFound !== 'undefined' && userFound.id !== userId) {
     throw new ValidationError(`Já existe um usuário com o Login ${userName}`);
   }
@@ -68,11 +72,15 @@ export const updateUserFn = async (userId, userData, dataSource) => {
   return await dataSource.patch(`/users/${userId}`, { ...userData });
 };
 
+// DELETE User
 export const deleteUserFn = async (userId, dataSource) => {
   if (!userId)
     throw new ValidationError('Para excluir um Usuário informe seu ID');
 
   await userExist(userId, dataSource);
+
+  const loggedUserId = dataSource.context.loggedUserId;
+  isLoggedOwner(userId, loggedUserId);
 
   var deleted = await dataSource.delete(`/users/${userId}`);
   return !!deleted;
@@ -83,7 +91,16 @@ export const deleteUserFn = async (userId, dataSource) => {
 // verifica se o usuário existe no BD
 const userExist = async (userId, dataSource) => {
   try {
-    await dataSource.context.dataSources.usersAPI.get(`/users/${userId}`);
+    const user = await dataSource.context.dataSources.usersAPI.get(
+      `/users/${userId}`,
+      undefined,
+      {
+        cacheOptions: {
+          ttl: 0,
+        },
+      },
+    );
+    console.log(user);
   } catch (error) {
     throw new ValidationError(`Usuário com ID: ${userId} não encontrado`);
   }

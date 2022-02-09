@@ -2,9 +2,9 @@ import { verify } from 'jsonwebtoken';
 import { UsersApi } from './user/datasources';
 
 export const context = async ({ req }) => {
-  const loggedUseId = await authorizeUser(req);
+  const loggedUserId = await authorizeUser(req);
   return {
-    loggedUseId,
+    loggedUserId,
   };
 };
 

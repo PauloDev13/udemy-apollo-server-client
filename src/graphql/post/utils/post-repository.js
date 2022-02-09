@@ -1,11 +1,18 @@
 import { ValidationError } from 'apollo-server';
+import { isLoggedIn, isLoggedOwner } from '../../login/utils/auth-functions';
 
 // CRIA Post
 export const createPostFn = async (postData, dataSource) => {
-  const postInfo = await createPostInfo(postData, dataSource);
-  const { title, body, userId } = postInfo;
+  var loggedUserId = dataSource.context.loggedUserId;
 
-  if (!title || !body || !userId) {
+  isLoggedIn(loggedUserId);
+
+  postData.userId = loggedUserId;
+
+  const postInfo = await createPostInfo(postData, dataSource);
+  const { title, body } = postInfo;
+
+  if (!title || !body) {
     throw new ValidationError(
       'Informe o título, o conteúdo e o ID do usuário autor do Post',
     );
@@ -19,9 +26,11 @@ export const updatePostFn = async (postId, postData, dataSource) => {
     throw new ValidationError('Para atualizar um Post informe seu ID');
   }
 
-  await postExist(postId, dataSource);
+  const userId = await postExist(postId, dataSource);
+  const loggedUserId = dataSource.context.loggedUserId;
+  isLoggedOwner(userId, loggedUserId);
 
-  const { title, body, userId } = postData;
+  const { title, body } = postData;
 
   if (typeof title !== 'undefined') {
     if (!title) {
@@ -35,17 +44,6 @@ export const updatePostFn = async (postId, postData, dataSource) => {
     }
   }
 
-  if (typeof userId !== 'undefined') {
-    if (!userId) {
-      throw new ValidationError('O ID do usuário deve ser informado');
-    }
-    await userExist(userId, dataSource);
-  }
-
-  // if (postData?.userId) {
-  //   await userExist(postData.userId, dataSource);
-  // }
-
   return await dataSource.patch(`/posts/${postId}`, { ...postData });
 };
 
@@ -57,33 +55,38 @@ export const deletePostFn = async (postId, dataSource) => {
     );
   }
 
-  await postExist(postId, dataSource);
+  const userId = await postExist(postId, dataSource);
+
+  var loggedUserId = dataSource.context.loggedUserId;
+  isLoggedOwner(userId, loggedUserId);
 
   var deleted = await dataSource.delete(`/posts/${postId}`);
   return !!deleted;
 };
 
+// MÉTODOS AUXILIARES
+// verifica se o post existe e se existir, retorna seu ID
 const postExist = async (postId, dataSource) => {
   try {
-    await dataSource.context.dataSources.postsAPI.get(`/posts/${postId}`);
+    const postFound = await dataSource.context.dataSources.postsAPI.get(
+      `/posts/${postId}`,
+      undefined,
+      {
+        cacheOptions: {
+          ttl: 0,
+        },
+      },
+    );
+
+    const { userId } = postFound;
+    return userId;
   } catch (error) {
     throw new ValidationError(`Post com ID: ${postId} não encontrado`);
   }
 };
 
-const userExist = async (userId, dataSource) => {
-  try {
-    await dataSource.context.dataSources.usersAPI.get(`/users/${userId}`);
-  } catch (error) {
-    throw new ValidationError(`Usuário com ID: ${userId} não encontrado`);
-  }
-};
-
+// monta os dados que serão enviados para o BD
 const createPostInfo = async (postData, dataSource) => {
-  const { title, body, userId } = postData;
-
-  await userExist(userId, dataSource);
-
   const indexRefPost = await dataSource.get('/posts', {
     _limit: 1,
     _order: 'desc',
@@ -93,9 +96,7 @@ const createPostInfo = async (postData, dataSource) => {
   const indexRef = indexRefPost[0].indexRef + 1;
 
   return {
-    title,
-    body,
-    userId,
+    ...postData,
     indexRef,
     createdAt: new Date().toISOString(),
   };
