@@ -168,7 +168,7 @@
       "indexRef": 21,
       "createdAt": "2022-02-09T13:25:06.297Z",
       "id": "84DZgpg",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4NERaZ3BnIiwiaWF0IjoxNjQ0NDE4NTA1LCJleHAiOjE2NDQ1MDQ5MDV9.7tOlc5jEo0_2rbeLI-FOlbY5CXooKkIsAPxuR1P1XFQ"
+      "token": ""
     },
     {
       "firstName": "Maria Fernanda",
@@ -178,7 +178,7 @@
       "indexRef": 22,
       "createdAt": "2022-02-09T14:00:57.811Z",
       "id": "0Y13TVG",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwWTEzVFZHIiwiaWF0IjoxNjQ0NDMwMzk0LCJleHAiOjE2NDQ1MTY3OTR9.qqzSfsNR3B4Ix5QshZcIMh_ZoRq3GpQeKkgENGTUxvs"
+      "token": ""
     }
   ],
   "posts": [

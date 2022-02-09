@@ -91,7 +91,7 @@ export const deleteUserFn = async (userId, dataSource) => {
 // verifica se o usuário existe no BD
 const userExist = async (userId, dataSource) => {
   try {
-    const user = await dataSource.context.dataSources.usersAPI.get(
+    await dataSource.context.dataSources.usersAPI.get(
       `/users/${userId}`,
       undefined,
       {
@@ -100,7 +100,6 @@ const userExist = async (userId, dataSource) => {
         },
       },
     );
-    console.log(user);
   } catch (error) {
     throw new ValidationError(`Usuário com ID: ${userId} não encontrado`);
   }
