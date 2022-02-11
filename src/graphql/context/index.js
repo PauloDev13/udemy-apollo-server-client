@@ -1,6 +1,6 @@
 import { verify } from 'jsonwebtoken';
-import { cookieParser } from './login/utils/cookies-parser';
-import { UsersApi } from './user/datasources';
+import { cookieParser } from '../schema/login/utils/cookies-parser';
+import { UsersApi } from '../schema/user/datasources';
 
 export const context = async ({ req, res }) => {
   let loggedUserId = await authorizeUserBearerToken(req);

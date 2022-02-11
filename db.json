@@ -172,13 +172,13 @@
     },
     {
       "firstName": "Maria Fernanda",
-      "lastName": "Nunes de Morais",
+      "lastName": "Nunes Morais",
       "userName": "nanda",
       "passwordHash": "$2b$12$pXxQXBF13d6m5UnpHi0TV.vOXbAS2wK6Uyia5PXKeIG/QXP/B/OMe",
       "indexRef": 22,
       "createdAt": "2022-02-09T14:00:57.811Z",
       "id": "0Y13TVG",
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwWTEzVFZHIiwiaWF0IjoxNjQ0NjAwNDQ4LCJleHAiOjE2NDQ2ODY4NDh9.uURpeHBCRjfAWWB4Q8UlFs3mV6xLg9mm4MdNBAxFpB0"
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIwWTEzVFZHIiwiaWF0IjoxNjQ0NjE2NjE2LCJleHAiOjE2NDQ3MDMwMTZ9.eRSB7R30wqnFSJwBclmn1PtLHwn8AlbQdZ0HO0c3kME"
     }
   ],
   "posts": [
