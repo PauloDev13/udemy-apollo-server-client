@@ -32,6 +32,16 @@ export class LoginApi extends RESTDataSource {
         cacheOptions: { ttl: 0 },
       },
     );
+
+    // response header
+    this.context.res.cookie('jwtToken', token, {
+      secure: true, // https - rede segura
+      httpOnly: true, // não deve ser acessado via código
+      maxAge: 1000 * 60 * 60 * 24, // duração de 1 dia
+      path: '/',
+      sameSite: 'none', // as opções são: strict, lax e none
+    });
+
     return {
       userId,
       token,
@@ -66,7 +76,6 @@ export class LoginApi extends RESTDataSource {
   }
 
   async getUser(userName) {
-    console.log('USER NAME GET ' + userName);
     const user = await this.get(
       '/users',
       { userName },

@@ -16,6 +16,10 @@ const server = new ApolloServer({
       loginAPI: new LoginApi(),
     };
   },
+  cors: {
+    origin: ['https://studio.apollographql.com', 'https://cdpn.io'],
+    credentials: true,
+  },
 });
 
 server
