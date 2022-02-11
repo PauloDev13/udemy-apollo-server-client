@@ -40,4 +40,8 @@ export class UsersApi extends RESTDataSource {
   async deleteUser(userId) {
     return await deleteUserFn(userId, this);
   }
+
+  async batchLoadById(id) {
+    return this.dataLoader.load(id);
+  }
 }
