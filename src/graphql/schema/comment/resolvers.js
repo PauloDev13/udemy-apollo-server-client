@@ -1,4 +1,3 @@
-import { ValidationError } from 'apollo-server';
 import { isLoggedIn } from '../login/utils/auth-functions';
 
 const createComment = async (_, { data }, { dataSources, loggedUserId }) => {
@@ -6,13 +5,7 @@ const createComment = async (_, { data }, { dataSources, loggedUserId }) => {
 
   const { postId, comment } = data;
 
-  console.log(postId);
-
-  await dataSources.postsAPI.get(`/posts/${postId}`, undefined, {
-    cacheOptions: {
-      ttl: 0,
-    },
-  });
+  await dataSources.postsAPI.getPost(postId);
 
   return dataSources.commentDb.create({
     postId,

@@ -35,6 +35,10 @@ const user = async ({ userId }, __, { dataSources }) => {
   return dataLoader.load(userId);
 };
 
+const comments = async ({ id: post_id }, _, { dataSources }) => {
+  return dataSources.commentDb.getPostById(post_id);
+};
+
 export const postResolvers = {
   Query: {
     post,
@@ -49,5 +53,6 @@ export const postResolvers = {
 
   Post: {
     user,
+    comments,
   },
 };
