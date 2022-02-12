@@ -1,6 +1,24 @@
-const createComment = async (_, { data }) => {
-  const { comment, postId } = data;
-  console.log(comment, postId);
+import { ValidationError } from 'apollo-server';
+import { isLoggedIn } from '../login/utils/auth-functions';
+
+const createComment = async (_, { data }, { dataSources, loggedUserId }) => {
+  isLoggedIn(loggedUserId);
+
+  const { postId, comment } = data;
+
+  console.log(postId);
+
+  await dataSources.postsAPI.get(`/posts/${postId}`, undefined, {
+    cacheOptions: {
+      ttl: 0,
+    },
+  });
+
+  return dataSources.commentDb.create({
+    postId,
+    comment,
+    userId: loggedUserId,
+  });
 };
 
 const user = async ({ user_id }, _, { dataSources }) => {
