@@ -28,7 +28,6 @@ const deletePost = (_, { postId }, { dataSources }) => {
 };
 
 // FIELD RESOLVERS
-
 // field user in Post
 const user = async ({ userId }, __, { dataSources }) => {
   const { dataLoader } = dataSources.usersAPI;
@@ -36,7 +35,7 @@ const user = async ({ userId }, __, { dataSources }) => {
 };
 
 const comments = async ({ id: post_id }, _, { dataSources }) => {
-  return dataSources.commentDb.getPostById(post_id);
+  return dataSources.commentDb.batchLoader(post_id);
 };
 
 export const postResolvers = {
