@@ -1,4 +1,4 @@
-import { PubSub } from 'graphql-subscriptions';
+import { PubSub, withFilter } from 'apollo-server';
 import { isLoggedIn } from '../login/utils/auth-functions';
 
 export const pubSub = new PubSub();
@@ -11,12 +11,13 @@ const createComment = async (_, { data }, { dataSources, loggedUserId }) => {
 
   const { postId, comment } = data;
 
-  await dataSources.postsAPI.getPost(postId);
+  const post = await dataSources.postsAPI.getPost(postId);
 
   return dataSources.commentDb.create({
     postId,
     comment,
     userId: loggedUserId,
+    postOwner: post?.userId || null,
   });
 };
 
@@ -28,10 +29,17 @@ const user = async ({ user_id }, _, { dataSources }) => {
 };
 
 const createdComment = {
-  subscribe: (parentObj, args, context) => {
-    console.log(context);
-    return pubSub.asyncIterator([CREATED_COMMENT_TRIGGER]);
-  },
+  subscribe: withFilter(
+    () => {
+      return pubSub.asyncIterator([CREATED_COMMENT_TRIGGER]);
+    },
+    (payload, _variable, context) => {
+      const hasPostOwner = payload.postOwner !== null;
+      const postOwnerIsLoggedUser = payload.postOwner === context.loggedUserId;
+      const shouldNotifyUser = hasPostOwner && postOwnerIsLoggedUser;
+      return shouldNotifyUser;
+    },
+  ),
 };
 
 export const commentResolvers = {
