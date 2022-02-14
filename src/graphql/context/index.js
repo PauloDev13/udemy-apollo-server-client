@@ -2,12 +2,18 @@ import { verify } from 'jsonwebtoken';
 import { cookieParser } from '../schema/login/utils/cookies-parser';
 import { UsersApi } from '../schema/user/datasources';
 
-export const context = async ({ req, res }) => {
-  let loggedUserId = await authorizeUserBearerToken(req);
+export const context = async ({ req, res, connection }) => {
+  const regOrConnection = req || connection?.context?.req;
+
+  let loggedUserId = await authorizeUserBearerToken(regOrConnection);
 
   if (!loggedUserId) {
-    if (req && req.headers && req.headers.cookie) {
-      const { jwtToken } = cookieParser(req.headers.cookie);
+    if (
+      regOrConnection &&
+      regOrConnection.headers &&
+      regOrConnection.headers.cookie
+    ) {
+      const { jwtToken } = cookieParser(regOrConnection.headers.cookie);
       loggedUserId = await verifyJwtToken(jwtToken);
     }
   }

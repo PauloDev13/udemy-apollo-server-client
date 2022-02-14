@@ -29,9 +29,7 @@ const user = async ({ user_id }, _, { dataSources }) => {
 
 const createdComment = {
   subscribe: (parentObj, args, context) => {
-    console.log('PARENT ' + parentObj);
-    console.log('ARGS ' + args);
-    console.log('CTX ' + context);
+    console.log(context);
     return pubSub.asyncIterator([CREATED_COMMENT_TRIGGER]);
   },
 };

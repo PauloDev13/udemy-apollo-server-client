@@ -24,8 +24,10 @@ const server = new ApolloServer({
     credentials: true,
   },
   subscriptions: {
-    onConnect: (conParams, ws, context) => {
-      console.log('CLIENT CONNECTED');
+    onConnect: (connectParams, ws, _context) => {
+      return {
+        req: ws.upgradeReq,
+      };
     },
   },
 });
