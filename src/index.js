@@ -32,6 +32,8 @@ const server = new ApolloServer({
   },
 });
 
+const port = process.env.PORT | 4003;
+
 server
-  .listen(4003)
+  .listen(port)
   .then(({ url }) => console.log(`Server listening on ${url}`));
