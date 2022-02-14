@@ -23,6 +23,11 @@ const server = new ApolloServer({
     origin: ['https://studio.apollographql.com', 'https://cdpn.io'],
     credentials: true,
   },
+  subscriptions: {
+    onConnect: (conParams, ws, context) => {
+      console.log('CLIENT CONNECTED');
+    },
+  },
 });
 
 server
