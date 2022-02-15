@@ -1,13 +1,10 @@
 import fetch from 'node-fetch';
-import { getUtilsPosts } from './post/utils';
-import { getUtilsUsers } from './user/utils';
 
-const getUsers = getUtilsUsers(fetch);
-const getPosts = getUtilsPosts(fetch);
+const API_URL = 'http://localhost:3000';
 
 export const context = () => {
   return {
-    getUsers: getUsers,
-    getPosts: getPosts,
+    getUsers: (path = '') => fetch(`${API_URL}/users/${path}`),
+    getPosts: (path = '') => fetch(`${API_URL}/posts/${path}`),
   };
 };
